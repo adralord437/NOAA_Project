@@ -1,0 +1,65 @@
+---
+title: "NOAA"
+author: "Angel Rodriguez"
+date: "6/7/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Economic and Social impact of Severe Weather Events in the USA
+
+## Synopsis
+This article has been made as an assignment for the Course: Reproducible Research by Johns Hopkins University.
+In it I try to determine primarly the economic consequences of the most common natural events in the USA. Giving a particular attention to the State of TEXAS and Harris County, which I found to be the places in the United States that take the greatest economic losses as a consequence of this events. This foundings can be useful to design informed policies that improve the preparation of this city to reduce any major damage in the future.
+
+
+## Data Processing
+As a first step to conduct the analysis, the data had to be downloaded from an internet source and some transformations had to be made:
+
+### Loading dependencies
+```{r}
+if(!require(dplyr))(install.packages("dplyr"))         ; library(dplyr)
+if(!require(ggplot2))(install.packages("ggplot2"))     ; library(ggplot2)
+if(!require(gridExtra))(install.packages("gridExtra")) ; library(gridExtra)
+```
+In order to conduct the analysis some add on packages had to be loaded into R environment. This packages are:
+* dplyr     : Which is a package for data wrangling
+* ggplot2   : Which was used to make the plots since its plots can be customized
+* gridExtra : An add-on package to arrange multiple plots in a single window
+
+### Downloading the Data
+```{r}
+if(!dir.exists("./data"))(dir.create("./data"))
+
+url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+download.file(url, destfile = "./data/Storm_Data.bz2")  ## 2020-06-07 17:36:05 CST
+```
+
+First, a folder called **data** was created to contain, not surprinsingly, the raw data. Then, the URL of the file was provided to *download.file* function to download the data. The datetime of the download is provided above in the code chunk.
+
+### Importing the Data into R environment
+```{r}
+storm_data <- read.csv("./data/Storm_Data.bz2")
+str(storm_data)
+View(storm_data)
+```
+
+The data was imported using the *read.csv* function from the base package. The raw data was in a compressed format called **bz2**, fortunately, the function that was used is clever enough to de-compressed the file before loading it into the environment.
+
+### Tranforming variable BGN_DATE to Date format
+```{r}
+storm_data$BGN_DATE <- as.Date(storm_data$BGN_DATE, format = "%m/%d/%Y %H:%M:%S")
+with(storm_data, range(BGN_DATE)) # Range: 1950 - 2011
+```
+Before the begining of the analysis the variable **BGN_DATE**, which corresponds to the date the event started, was transformed into *date* format to avoid any problem, especially when plotting.
+
+## Results
+
+
+
+
